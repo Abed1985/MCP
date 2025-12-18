@@ -1,43 +1,31 @@
-import logging
-import os
-from fastmcp import FastMCP, Client
+from fastmcp import FastMCP, Client 
+import logging 
+import os 
+# Ensure logs directory exists 
+os.makedirs("logs", exist_ok=True) 
+# Configure logging to DEBUG so you can see all messages 
+logging.basicConfig( 
+    filename="logs/proxy_server.log", 
+    level=logging.DEBUG, format="%(asctime)s [%(levelname)s] %(message)s" 
+    ) 
+logging.info("Starting proxy server...") 
+# Connect to your remote HTTP MCP server 
+client = Client("http://192.168.5.69:9000/mcp") 
 
-# Logging
+# Create the STDIO proxy 
+proxy = FastMCP.as_proxy(client, name="hello_world_proxy", debug=True) 
+if __name__ == "__main__": 
+    logging.info("Running STDIO proxy...") 
+    try: proxy.run() 
+    # STDIO transport 
+    except Exception as e: 
+        logging.exception("Proxy failed:") 
+        
+# # extra code for extra logging 
+# class LoggingClient(Client): 
+#     async def send(self, message): 
+#         logging.debug(f"Sending to server: {message}") 
+#         return await super().send(message) 
 
-LOG_DIR = os.getenv("MCP_PROXY_LOG_DIR", "logs")
-os.makedirs(LOG_DIR, exist_ok=True)
-
-logging.basicConfig(
-    filename=os.path.join(LOG_DIR, "proxy_server.log"),
-    level=logging.DEBUG,
-    format="%(asctime)s [%(levelname)s] %(message)s",
-)
-
-logging.info("Starting MCP STDIO proxy")
-
-# -----------------------------
-# Remote MCP server
-# -----------------------------
-REMOTE_MCP_URL = os.getenv(
-    "REMOTE_MCP_URL",
-    "http://192.168.5.69:9000/mcp"
-)
-
-logging.info("Connecting to remote MCP server: %s", REMOTE_MCP_URL)
-
-client = Client(REMOTE_MCP_URL)
-
-proxy = FastMCP.as_proxy(
-    client,
-    name="remote_mcp_proxy",
-    debug=True,
-)
-
-# -----------------------------
-# Run proxy (STDIO)
-# -----------------------------
-if __name__ == "__main__":
-    try:
-        proxy.run()
-    except Exception:
-        logging.exception("Proxy crashed")
+# client = LoggingClient("http://192.168.5.69:9000/mcp") 
+# proxy = FastMCP.as_proxy(client, name="hello_world_proxy", debug=True)

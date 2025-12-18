@@ -1,33 +1,24 @@
-from fastmcp import FastMCP
-import logging
-import os
+from fastmcp import FastMCP 
+import logging, os 
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s",
-)
+os.makedirs("logs", exist_ok=True) 
+logging.basicConfig(filename="logs/hello_world_http.log", level=logging.INFO) 
+logger = logging.getLogger(__name__) 
 
-logger = logging.getLogger("mcp.server")
+mcp = FastMCP("Hello World") 
+@mcp.tool( 
+    name="add", 
+    description="Add two integers and return the result." 
+    ) 
+def add(a: int, b: int) -> int: 
+    logger.info(f"Adding {a} and {b}") 
+    return a + b 
 
-mcp = FastMCP("Remote Hello World MCP")
-
-@mcp.tool(
-    name="add",
-    description="Add two integers and return the result."
-)
-def add(a: int, b: int) -> int:
-    logger.info("Adding %s + %s", a, b)
-    return a + b
-
-
-if __name__ == "__main__":
-    host = os.getenv("MCP_HTTP_HOST", "0.0.0.0")
-    port = int(os.getenv("MCP_HTTP_PORT", "9000"))
-
-    logger.info("Starting MCP HTTP server on %s:%s", host, port)
-
-    mcp.run(
-        transport="http",
-        host=host,
-        port=port,
-    )
+if __name__ == "__main__": 
+    # If running from MCP inspector (mcp dev), use stdio 
+    if os.environ.get("MCP_INSPECTOR") == "1": 
+        print("[MCP] Running in INSPECTOR (STDIO) mode...") 
+        mcp.run() 
+    else: 
+        print("[MCP] Running HTTP server at http://192.168.5.69:9000 ...") 
+        mcp.run( transport="http", host="192.168.5.69", port=9000, )
