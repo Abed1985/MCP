@@ -1,0 +1,11 @@
+{
+    "mcpServers": {
+        "hello_world": {
+            "command": "wsl.exe",
+            "args": [
+                "/home/abooda/dev/venv/bin/python",
+                "/home/abooda/dev/proxy_server.py"
+            ]
+        }
+    }
+}
