@@ -1,0 +1,11 @@
+[project]
+name = "mcp-http-proxy"
+version = "0.1.0"
+description = "STDIO to HTTP MCP proxy for Claude Desktop"
+requires-python = ">=3.10"
+
+dependencies = [
+    "fastmcp",
+]
+
+[tool.uv]

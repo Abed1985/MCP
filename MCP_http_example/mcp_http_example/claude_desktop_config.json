@@ -1,0 +1,12 @@
+
+{
+  "mcpServers": {
+    "remote-mcp": {
+      "command": "wsl.exe",
+      "args": [
+        "/home/youruser/mcp_http_example/proxy/.venv/bin/python",
+        "/home/youruser/mcp_http_example/proxy/proxy_server.py"
+      ]
+    }
+  }
+}
