@@ -1,11 +1,12 @@
+
 {
-    "mcpServers": {
-        "hello_world": {
-            "command": "wsl.exe",
-            "args": [
-                "/home/abooda/dev/venv/bin/python",
-                "/home/abooda/dev/proxy_server.py"
-            ]
-        }
+  "mcpServers": {
+    "remote-mcp": {
+      "command": "wsl.exe",
+      "args": [
+        "/home/youruser/mcp_http_example/proxy/.venv/bin/python",
+        "/home/youruser/mcp_http_example/proxy/proxy_server.py"
+      ]
     }
+  }
 }
